@@ -4,7 +4,7 @@
         <form @submit.prevent="onSubmit">
         <div class="form-group">
             <label for="InputEmail">Email address</label>
-            <ValidationProvider name="email" ref="oberver" v-slot="{ errors }" rules="required">
+            <ValidationProvider name="email" ref="oberver" v-slot="{ errors }" rules="required|validName">
                  <input 
                  type="text" 
                  class="form-control"
@@ -13,8 +13,13 @@
                  aria-describedby="emailHelp" 
                  placeholder="Enter email"
                  v-model="name"
+                 
                 >
-                <span v-show="isShow">{{errors[0]}}</span>
+                <ul>
+                    <li v-for="(error,index) in errors" :key="index">
+                        <span>{{error }}</span>
+                    </li>
+                </ul>
             </ValidationProvider>           
             <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
         </div>
@@ -30,14 +35,15 @@ import { Component, Vue } from 'nuxt-property-decorator'
 @Component
 export default class MyIndexPage extends Vue {
     name:string=""
-    isShow:boolean=false
     async onSubmit(){
         let observer : any = this.$refs.observer
         const isValidate = await observer.validate()
         if(!isValidate){
-            return this.isShow=true
+            console.log("is not valid")
+        }else{
+            this.name=""
+            observer.reset()
         }
-        this.isShow=false
     }
 }
 </script>

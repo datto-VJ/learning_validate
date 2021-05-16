@@ -9,7 +9,20 @@ extend('required',{
     ...required
     ,
     message:"please check again",
-}
+},
+extend('validName',{
+    message:"Tối thiểu tám ký tự, ít nhất một chữ cái và một số",
+    validate:(value)=>{
+        let errMessage = ""
+        const mustContainTheseCharts = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/
+        let containRequiredCharts = mustContainTheseCharts.test(value)
+        if(containRequiredCharts){
+            return true
+        }else{
+            return false
+        }
+    }
+})
 )
 
 Vue.component('ValidationProvider', ValidationProvider)
